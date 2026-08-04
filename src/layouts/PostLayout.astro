@@ -1,0 +1,82 @@
+---
+import Main from "../layouts/MainLayout.astro";
+import Markdown from "../components/Markdown.astro";
+
+interface Props {
+  title?: string;
+  subTitle?: string;
+  bannerImage?: string;
+  tocHTMLString?: string;
+}
+
+const {
+  title,
+  subTitle,
+  bannerImage,
+  tocHTMLString,
+} = Astro.props;
+---
+
+<Main title={title} subTitle={subTitle} bannerImage={bannerImage}>
+  <div class="article-wrapper">
+    <!-- TOC at the top -->
+    {
+      tocHTMLString && (
+        <div class="toc-card mb-8 rounded-2xl bg-[var(--primary-color-lighten)]/30 p-4">
+          <div class="title mb-3">
+            <span class="pl-4 text-lg font-bold text-[var(--text-color)]">目錄</span>
+          </div>
+          <nav class="toc-nav" set:html={tocHTMLString} />
+        </div>
+      )
+    }
+
+    <div class="article">
+      <Markdown>
+        <slot />
+      </Markdown>
+    </div>
+  </div>
+</Main>
+
+<style>
+  .article-wrapper {
+    @apply w-full rounded-2xl bg-[var(--card-color)] p-10;
+  }
+  .article {
+    @apply flex flex-col;
+  }
+
+  .title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+  }
+  .title::before {
+    position: absolute;
+    display: block;
+    content: " ";
+    background-color: var(--primary-color);
+    top: 3px;
+    bottom: 3px;
+    width: 0.3rem;
+    border-radius: 4px;
+  }
+
+  .toc-nav :global(ul) {
+    @apply list-none space-y-1 pl-0 text-sm;
+  }
+  .toc-nav :global(li) {
+    @apply py-0.5;
+  }
+  .toc-nav :global(a) {
+    @apply block rounded-lg px-2 py-1 text-[var(--text-color-lighten)] no-underline transition-all hover:bg-[var(--primary-color-lighten)] hover:text-[var(--primary-color)];
+  }
+  .toc-nav :global(ul ul) {
+    @apply pl-3;
+  }
+  .toc-nav :global(ul ul a) {
+    @apply text-xs;
+  }
+</style>

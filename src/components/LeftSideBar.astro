@@ -1,0 +1,121 @@
+---
+import YukinaConfig from "../../yukina.config";
+import SocialIcon from "./widgets/SocialIcon.astro";
+import { GetCategories, GetTags } from "../utils/content";
+
+const categories = await GetCategories();
+const tags = await GetTags();
+const categoryKeys = [...categories.keys()].slice(0, YukinaConfig.maxSidebarCategoryChip);
+const tagKeys = [...tags.keys()].slice(0, YukinaConfig.maxSidebarTagChip);
+---
+
+<div class="flex w-full flex-row justify-center">
+  <div class="flex flex-col space-y-4">
+    <!-- Author Info -->
+    <div
+      class="onload-animation rounded-3xl bg-[var(--card-color)] p-4"
+      style="animation-delay: var(--onload-animation-delay);"
+    >
+      <div class="flex flex-col items-center space-y-3">
+        <img
+          src={YukinaConfig.avatarUrl}
+          alt={YukinaConfig.username}
+          class="h-20 w-20 rounded-full object-cover ring-2 ring-[var(--primary-color)]"
+          loading="lazy"
+        />
+        <div class="text-center">
+          <div class="text-lg font-bold text-[var(--text-color)]">{YukinaConfig.username}</div>
+          <div class="mt-1 text-sm text-[var(--text-color-lighten)]">{YukinaConfig.sign}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Social Media -->
+    {
+      YukinaConfig.socialLinks.length > 0 && (
+        <div
+          class="onload-animation rounded-3xl bg-[var(--card-color)] p-4"
+          style="animation-delay: calc(var(--onload-animation-delay) + 0.1s);"
+        >
+          <div class="title mb-3">
+            <span class="pl-4 text-lg font-bold text-[var(--text-color)]">社群媒體</span>
+          </div>
+          <div class="flex flex-row flex-wrap justify-center gap-3">
+            {YukinaConfig.socialLinks.map((item) => (
+              <SocialIcon name={item.icon} link={item.link} />
+            ))}
+          </div>
+        </div>
+      )
+    }
+
+    <!-- Categories -->
+    {
+      categoryKeys.length > 0 && (
+        <div
+          class="onload-animation rounded-3xl bg-[var(--card-color)] p-4"
+          style="animation-delay: calc(var(--onload-animation-delay) + 0.2s);"
+        >
+          <div class="title mb-3">
+            <span class="pl-4 text-lg font-bold text-[var(--text-color)]">分類</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            {categoryKeys.map((cat) => (
+              <a
+                href={`/categories/${cat}`}
+                class="rounded-full bg-[var(--primary-color-lighten)] px-3 py-1 text-xs font-medium text-[var(--primary-color)] transition-all hover:brightness-110"
+              >
+                {categories.get(cat)!.name}
+              </a>
+            ))}
+          </div>
+        </div>
+      )
+    }
+
+    <!-- Tags -->
+    {
+      tagKeys.length > 0 && (
+        <div
+          class="onload-animation rounded-3xl bg-[var(--card-color)] p-4"
+          style="animation-delay: calc(var(--onload-animation-delay) + 0.3s);"
+        >
+          <div class="title mb-3">
+            <span class="pl-4 text-lg font-bold text-[var(--text-color)]">標籤</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            {tagKeys.map((t) => (
+              <a
+                href={`/tags/${t}`}
+                class="rounded-full bg-[var(--card-color)] px-3 py-1 text-xs font-medium text-[var(--text-color-lighten)] ring-1 ring-[var(--primary-color)]/30 transition-all hover:bg-[var(--primary-color-lighten)] hover:text-[var(--primary-color)]"
+              >
+                # {tags.get(t)!.name}
+              </a>
+            ))}
+          </div>
+        </div>
+      )
+    }
+
+  </div>
+</div>
+
+<style>
+  .title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+  }
+
+  .title::before {
+    position: absolute;
+    display: block;
+    content: " ";
+    background-color: var(--primary-color);
+    top: 3px;
+    bottom: 3px;
+    width: 0.3rem;
+    border-radius: 4px;
+  }
+</style>

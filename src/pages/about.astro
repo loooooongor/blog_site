@@ -1,0 +1,68 @@
+---
+import { getEntry, render } from "astro:content";
+import Main from "../layouts/MainLayout.astro";
+import Markdown from "../components/Markdown.astro";
+
+const aboutPost = await getEntry("specs", "about");
+const { Content } = await render(aboutPost!);
+interface Props {
+  title?: string;
+  subTitle?: string;
+  bannerImage?: string;
+}
+const { title, subTitle, bannerImage } = Astro.props;
+---
+
+<Main title={title} subTitle={subTitle} bannerImage={bannerImage}>
+  <!-- <Fragment set:html={tocHTMLString} /> -->
+  <div class="article-wrapper">
+    <div class="article">
+      <Markdown>
+        <Content />
+      </Markdown>
+
+      <!-- Certificates -->
+      <div class="certificates-section">
+        <div class="certificates-grid">
+          <img src="/images/ceritificate_quarter_5th.webp" alt="季度第五名證書" loading="lazy" />
+          <img src="/images/ceritificate_july.webp" alt="七月證書" loading="lazy" />
+          <img src="/images/ceritificate_auguest.webp" alt="八月證書" loading="lazy" />
+          <img src="/images/ceritificate_2nd.webp" alt="第二名證書" loading="lazy" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</Main>
+
+<style>
+  .article-wrapper {
+    @apply w-full rounded-2xl bg-[var(--card-color)] p-10;
+  }
+  .article {
+    @apply flex flex-col;
+  }
+
+  /* Certificates Grid */
+  .certificates-section {
+    @apply mt-10 border-t pt-12;
+    border-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
+  }
+
+
+  .certificates-grid {
+    @apply grid grid-cols-4 gap-4;
+  }
+
+  .certificates-grid img {
+    @apply w-full rounded-xl object-contain transition-all hover:shadow-lg;
+    aspect-ratio: 3 / 4;
+    max-height: 480px;
+  }
+
+  @media (max-width: 768px) {
+    .certificates-grid {
+      @apply grid-cols-2;
+    }
+  }
+</style>

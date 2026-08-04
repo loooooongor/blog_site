@@ -1,0 +1,81 @@
+---
+import Main from "../../layouts/MainLayout.astro";
+import PostCard from "../../components/PostCardGrid.astro";
+import I18nKeys from "../../locales/keys";
+import { i18n } from "../../locales/translation";
+import { GetCategories, GetTags } from "../../utils/content";
+
+export async function getStaticPaths() {
+  const categories = await GetCategories();
+  const categoryList = Array.from(categories.keys());
+  return categoryList.map((category) => ({
+    params: { category: category },
+  }));
+}
+
+const categories = await GetCategories();
+const tags = await GetTags();
+const { category } = Astro.params;
+const categoryKeys = [...categories.keys()];
+const tagKeys = [...tags.keys()];
+
+const categoryData = categories.get(category);
+const posts = categoryData?.posts ?? [];
+const categoryName = categoryData?.name ?? category;
+---
+
+<Main title={categoryName} subTitle={i18n(I18nKeys.pages_categories_archive)}>
+  <div class="space-y-6">
+    <!-- Filters -->
+    <div class="mx-3 flex flex-wrap gap-2 lg:mx-0">
+      <a
+        href="/"
+        class="filter-chip rounded-full bg-[var(--card-color)] px-4 py-1.5 text-sm font-medium text-[var(--text-color)] transition-all hover:bg-[var(--primary-color-lighten)] hover:text-[var(--primary-color)]"
+      >
+        全部
+      </a>
+      {
+        categoryKeys.map((cat) => (
+          <a
+            href={`/categories/${cat}`}
+            class={`filter-chip rounded-full px-4 py-1.5 text-sm font-medium transition-all hover:brightness-110 ${
+              cat === category
+                ? "bg-[var(--primary-color)] text-white"
+                : "bg-[var(--card-color)] text-[var(--text-color)] hover:bg-[var(--primary-color-lighten)] hover:text-[var(--primary-color)]"
+            }`}
+          >
+            {categories.get(cat)!.name}
+          </a>
+        ))
+      }
+    </div>
+
+    <!-- Post Grid -->
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+      {
+        posts.map((post, index) => (
+          <div
+            class="onload-animation"
+            style={`animation-delay: calc(var(--onload-animation-delay) + ${index + 1} * var(--onload-animation-interval));`}
+          >
+            <PostCard
+              id={post.id}
+              title={post.title}
+              published={post.date}
+              category={categoryName}
+              tags={post.tags}
+              image={undefined}
+              readingMetadata={{ time: 0, wordCount: 0 }}
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</Main>
+
+<style>
+  .filter-chip {
+    font-family: var(--primary-font);
+  }
+</style>

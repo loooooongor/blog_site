@@ -1,0 +1,91 @@
+---
+import { IdToSlug } from "../utils/hash";
+import { Icon } from "astro-icon/components";
+import { GetCoverURLForUnspecifiedEntry } from "../utils/cover";
+import { i18n } from "../locales/translation";
+import I18nKeys from "../locales/keys";
+import YukinaConfig from "../../yukina.config";
+import { formatDate } from "../utils/date";
+
+export interface Props {
+  id: string;
+  title: string;
+  published: Date;
+  category?: string;
+  tags?: string[];
+  description?: string;
+  image?: string;
+  readingMetadata: { time: number; wordCount: number };
+}
+
+const props = Astro.props;
+const entryID = IdToSlug(props.id);
+const contentUrl = `/posts/${entryID}`;
+const { time, wordCount } = props.readingMetadata;
+---
+
+<div class="card rounded-2xl bg-[var(--card-color)] overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1">
+  <a href={contentUrl} class="block">
+    <div class="card-cover relative overflow-hidden">
+      <img
+        class="lozad h-full w-full object-cover transition-all hover:scale-105"
+        data-src={props.image ?? GetCoverURLForUnspecifiedEntry(entryID)}
+        alt={props.title}
+      />
+    </div>
+    <div class="card-body p-4">
+      <div class="flex flex-row items-center justify-between text-xs text-[var(--text-color-lighten)] mb-2">
+        <span class="flex items-center gap-1">
+          <Icon name="cuida:calendar-outline" size={14} />
+          {formatDate(props.published, YukinaConfig.locale)}
+        </span>
+        {
+          props.category && (
+            <a
+              href={`/categories/${IdToSlug(props.category)}`}
+              class="rounded-full bg-[var(--primary-color-lighten)] px-2.5 py-0.5 text-[var(--primary-color)] hover:brightness-95 transition-all"
+            >
+              {props.category}
+            </a>
+          )
+        }
+      </div>
+      <h3 class="card-title text-lg font-semibold text-[var(--text-color)] line-clamp-2 mb-2 transition-colors hover:text-[var(--primary-color)]">
+        {props.title}
+      </h3>
+      {
+        props.description && (
+          <p class="text-sm text-[var(--text-color-lighten)] line-clamp-2 mb-3">
+            {props.description}
+          </p>
+        )
+      }
+      <div class="flex flex-row items-center justify-between text-xs text-[var(--text-color-lighten)]">
+        <div class="flex items-center gap-3">
+          <span>{wordCount}{i18n(I18nKeys.post_card_words)}</span>
+          <span>·</span>
+          <span>{time}{i18n(I18nKeys.post_card_minutes)}</span>
+        </div>
+      </div>
+    </div>
+  </a>
+</div>
+
+<style>
+  .card {
+    break-inside: avoid;
+  }
+
+  .card-cover {
+    aspect-ratio: 16 / 10;
+  }
+
+  .card-cover img {
+    height: 100%;
+    transition: transform 0.3s ease;
+  }
+
+  .card-title {
+    font-family: var(--title-font);
+  }
+</style>

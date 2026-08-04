@@ -1,0 +1,84 @@
+---
+import { getCollection } from "astro:content";
+import { IdToSlug } from "../../utils/hash";
+import PostLayout from "../../layouts/PostLayout.astro";
+import { render } from "astro:content";
+
+export async function getStaticPaths() {
+  const postEntries = await getCollection("posts");
+  return postEntries.map((entry) => ({
+    params: { slug: IdToSlug(entry.id) },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, remarkPluginFrontmatter } = await render(entry);
+
+function buildTOC(tocItems: any[] | undefined, level = 1): string {
+  if (!tocItems || tocItems.length === 0) return "";
+  let html = '<ul>';
+  for (const item of tocItems) {
+    html += `<li><a href="#${encodeURIComponent(item.slug)}">${item.title}</a>`;
+    if (item.children && item.children.length > 0) {
+      html += buildTOC(item.children, level + 1);
+    }
+    html += '</li>';
+  }
+  html += '</ul>';
+  return html;
+}
+
+const tocData = (remarkPluginFrontmatter as any)?.toc;
+const tocHTMLString = tocData ? buildTOC(tocData) : undefined;
+---
+
+{
+  !entry.data.licenseName && (
+    <PostLayout
+      title={entry.data.title}
+      subTitle={entry.data.description}
+      bannerImage={entry.data.cover}
+      published={entry.data.published}
+      tocHTMLString={tocHTMLString}
+    >
+      <div
+        class="hidden"
+        data-pagefind-body
+        data-pagefind-weight="10"
+        data-pagefind-meta="title"
+      >
+        {entry.data.title}
+      </div>
+      <div data-pagefind-body>
+        <Content />
+      </div>
+    </PostLayout>
+  )
+}
+{
+  entry.data.licenseName && (
+    <PostLayout
+      title={entry.data.title}
+      subTitle={entry.data.description}
+      bannerImage={entry.data.cover}
+      published={entry.data.published}
+      license={{ name: entry.data.licenseName, url: entry.data.licenseUrl }}
+      author={entry.data.author}
+      sourceLink={entry.data.sourceLink}
+      tocHTMLString={tocHTMLString}
+    >
+      <div
+        class="hidden"
+        data-pagefind-body
+        data-pagefind-weight="10"
+        data-pagefind-meta="title"
+      >
+        {entry.data.title}
+      </div>
+      <div data-pagefind-body>
+        <Content />
+      </div>
+    </PostLayout>
+  )
+}

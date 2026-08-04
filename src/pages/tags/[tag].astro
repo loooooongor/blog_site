@@ -1,0 +1,94 @@
+---
+import Main from "../../layouts/MainLayout.astro";
+import PostCard from "../../components/PostCardGrid.astro";
+import I18nKeys from "../../locales/keys";
+import { i18n } from "../../locales/translation";
+import { GetTags, GetCategories } from "../../utils/content";
+
+export async function getStaticPaths() {
+  const tags = await GetTags();
+  const tagList = Array.from(tags.keys());
+  return tagList.map((tag) => ({
+    params: { tag: tag },
+  }));
+}
+
+const tags = await GetTags();
+const categories = await GetCategories();
+const { tag } = Astro.params;
+const categoryKeys = [...categories.keys()];
+const tagKeys = [...tags.keys()];
+
+const tagData = tags.get(tag);
+const posts = tagData?.posts ?? [];
+const tagName = tagData?.name ?? tag;
+---
+
+<Main title={tagName} subTitle={i18n(I18nKeys.pages_tags_archive)}>
+  <div class="space-y-6">
+    <!-- Category Filters -->
+    <div class="mx-3 flex flex-wrap gap-2 lg:mx-0">
+      <a
+        href="/"
+        class="filter-chip rounded-full bg-[var(--card-color)] px-4 py-1.5 text-sm font-medium text-[var(--text-color)] transition-all hover:bg-[var(--primary-color-lighten)] hover:text-[var(--primary-color)]"
+      >
+        全部
+      </a>
+      {
+        categoryKeys.map((cat) => (
+          <a
+            href={`/categories/${cat}`}
+            class="filter-chip rounded-full bg-[var(--card-color)] px-4 py-1.5 text-sm font-medium text-[var(--text-color)] transition-all hover:bg-[var(--primary-color-lighten)] hover:text-[var(--primary-color)]"
+          >
+            {categories.get(cat)!.name}
+          </a>
+        ))
+      }
+    </div>
+
+    <!-- Tag Filters -->
+    <div class="mx-3 flex flex-wrap gap-2 lg:mx-0">
+      {
+        tagKeys.map((t) => (
+          <a
+            href={`/tags/${t}`}
+            class={`filter-chip rounded-full px-4 py-1.5 text-sm font-medium transition-all hover:brightness-110 ${
+              t === tag
+                ? "bg-[var(--primary-color)] text-white"
+                : "bg-[var(--card-color)] text-[var(--text-color)] hover:bg-[var(--primary-color-lighten)] hover:text-[var(--primary-color)]"
+            }`}
+          >
+            # {tags.get(t)!.name}
+          </a>
+        ))
+      }
+    </div>
+
+    <!-- Post Grid -->
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+      {
+        posts.map((post, index) => (
+          <div
+            class="onload-animation"
+            style={`animation-delay: calc(var(--onload-animation-delay) + ${index + 1} * var(--onload-animation-interval));`}
+          >
+            <PostCard
+              id={post.id}
+              title={post.title}
+              published={post.date}
+              tags={post.tags}
+              image={undefined}
+              readingMetadata={{ time: 0, wordCount: 0 }}
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</Main>
+
+<style>
+  .filter-chip {
+    font-family: var(--primary-font);
+  }
+</style>
