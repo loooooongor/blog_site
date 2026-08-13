@@ -22,3 +22,13 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# dev server logs
+*.log
+
+# Frontmatter CMS local cache
+.frontmatter/
+
+# local editor settings
+.vscode/mcp.json
+.vscode/settings.json

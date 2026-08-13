@@ -1,0 +1,100 @@
+{
+  "frontMatter.content.pageFolders": [
+    {
+      "path": "[[workspace]]/src/contents/posts",
+      "title": "文章 (Posts)"
+    },
+    {
+      "path": "[[workspace]]/src/contents/specs",
+      "title": "頁面 (Specs)"
+    }
+  ],
+  "frontMatter.content.publicFolder": "public",
+  "frontMatter.content.fmHighlight": true,
+  "frontMatter.content.wysiwyg": true,
+  "frontMatter.framework.id": "astro",
+  "frontMatter.preview.host": "http://localhost:4321",
+  "frontMatter.taxonomy.contentTypes": [
+    {
+      "name": "post",
+      "pageFolder": "[[workspace]]/src/contents/posts",
+      "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "title": "標題",
+          "isTitle": true,
+          "required": true
+        },
+        {
+          "name": "published",
+          "type": "datetime",
+          "title": "發布日期",
+          "default": "{{now}}",
+          "dateFormat": "yyyy-MM-dd",
+          "required": true
+        },
+        {
+          "name": "draft",
+          "type": "boolean",
+          "title": "草稿",
+          "default": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "title": "描述"
+        },
+        {
+          "name": "cover",
+          "type": "image",
+          "title": "封面圖片"
+        },
+        {
+          "name": "category",
+          "type": "choice",
+          "title": "分類",
+          "choices": ["八字命理", "六爻占卜", "解卦心法", "學習心得", "實戰案例"]
+        },
+        {
+          "name": "tags",
+          "type": "tags",
+          "title": "標籤"
+        },
+        {
+          "name": "author",
+          "type": "string",
+          "title": "作者",
+          "default": "祥師兄"
+        },
+        {
+          "name": "sourceLink",
+          "type": "string",
+          "title": "原文連結"
+        },
+        {
+          "name": "licenseName",
+          "type": "string",
+          "title": "授權名稱"
+        },
+        {
+          "name": "licenseUrl",
+          "type": "string",
+          "title": "授權連結"
+        }
+      ]
+    },
+    {
+      "name": "spec",
+      "pageFolder": "[[workspace]]/src/contents/specs",
+      "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "title": "標題",
+          "isTitle": true
+        }
+      ]
+    }
+  ]
+}
