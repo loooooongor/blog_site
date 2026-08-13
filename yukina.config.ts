@@ -39,10 +39,6 @@ const YukinaConfig: Configuration = {
       icon: "simple-icons:threads",
       link: "https://www.threads.net/@loongcfu/",
     },
-    {
-      icon: "simple-icons:whatsapp",
-      link: "https://wa.me/85291332674",
-    },
   ],
   maxSidebarCategoryChip: 6,
   maxSidebarTagChip: 12,

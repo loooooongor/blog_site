@@ -3,7 +3,6 @@ title: 解卦的核心：回歸「簡易」原則
 published: 2026-08-10
 draft: false
 description: 從日月動變到象法再到各家技巧，兜兜轉轉才發現卦的顯示根本沒那麼複雜——抓住兆機，一眼就能判斷吉凶。談談我對「簡易」原則的體悟。
-cover: "/images/jianyi.webp"
 category: 六爻占卜
 tags:
     - 解卦心法
@@ -11,6 +10,8 @@ tags:
 author: 祥師兄
 slug: 解卦的核心：回歸「簡易」原則
 ---
+
+![簡易封面圖](/images/jianyi.webp)
 
 曾經，我看卦也是圍繞日月動變、生來克去。
 
