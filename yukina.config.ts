@@ -33,11 +33,15 @@ const YukinaConfig: Configuration = {
   socialLinks: [
     {
       icon: "simple-icons:instagram",
-      link: "https://www.instagram.com/",
+      link: "https://www.instagram.com/loongcfu/",
     },
     {
       icon: "simple-icons:threads",
-      link: "https://www.threads.net/",
+      link: "https://www.threads.net/@loongcfu/",
+    },
+    {
+      icon: "simple-icons:whatsapp",
+      link: "https://wa.me/85291332674",
     },
   ],
   maxSidebarCategoryChip: 6,
