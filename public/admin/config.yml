@@ -1,0 +1,77 @@
+local_backend: true
+
+backend:
+  name: github
+  repo: loooooongor/blog_site
+  branch: main
+
+media_folder: "public/images"
+public_folder: "/images"
+
+collections:
+  - name: "posts"
+    label: "文章"
+    label_singular: "文章"
+    folder: "src/contents/posts"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "yaml-frontmatter"
+    editor:
+      preview: false
+    fields:
+      - label: "標題"
+        name: "title"
+        widget: "string"
+        required: true
+        i18n: true
+      - label: "發布日期"
+        name: "published"
+        widget: "datetime"
+        required: true
+        date_format: "yyyy-MM-dd"
+        time_format: false
+      - label: "草稿"
+        name: "draft"
+        widget: "boolean"
+        default: false
+        required: false
+      - label: "描述"
+        name: "description"
+        widget: "text"
+        required: false
+        i18n: true
+      - label: "封面圖片"
+        name: "cover"
+        widget: "image"
+        required: false
+      - label: "分類"
+        name: "category"
+        widget: "string"
+        required: false
+      - label: "標籤"
+        name: "tags"
+        widget: "list"
+        required: false
+      - label: "作者"
+        name: "author"
+        widget: "string"
+        required: false
+        default: "祥師兄"
+      - label: "原文連結"
+        name: "sourceLink"
+        widget: "string"
+        required: false
+      - label: "授權名稱"
+        name: "licenseName"
+        widget: "string"
+        required: false
+      - label: "授權連結"
+        name: "licenseUrl"
+        widget: "string"
+        required: false
+      - label: "內文"
+        name: "body"
+        widget: "markdown"
+        required: true
+        i18n: true

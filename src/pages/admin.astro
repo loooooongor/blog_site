@@ -1,0 +1,74 @@
+---
+// Decap CMS admin page - config 內嵌，避免 catch-all 路由攔截
+---
+
+<!doctype html>
+<html lang="zh-HK">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>內容管理 - 祥師兄</title>
+  </head>
+  <body>
+    <style is:inline>
+      /* Undo Tailwind CSS reset that conflicts with Decap CMS UI */
+      *, ::before, ::after {
+        box-sizing: content-box !important;
+        border-width: revert !important;
+        border-style: revert !important;
+        border-color: revert !important;
+      }
+      html {
+        line-height: normal !important;
+        font-family: sans-serif !important;
+        -webkit-text-size-adjust: 100% !important;
+      }
+    </style>
+    <script is:inline>
+      // 手動初始化模式，避免自動載入外部 config.yml
+      window.CMS_MANUAL_INIT = true;
+    </script>
+    <script is:inline src="https://unpkg.com/decap-cms@^3.6.0/dist/decap-cms.js"></script>
+    <script is:inline>
+      CMS.init({
+        config: {
+          local_backend: true,
+          backend: {
+            name: "github",
+            repo: "loooooongor/blog_site",
+            branch: "main",
+          },
+          media_folder: "public/images",
+          public_folder: "/images",
+          collections: [
+            {
+              name: "posts",
+              label: "文章",
+              label_singular: "文章",
+              folder: "src/contents/posts",
+              create: true,
+              slug: "{{slug}}",
+              extension: "md",
+              format: "yaml-frontmatter",
+              editor: { preview: false },
+              fields: [
+                { label: "標題",       name: "title",       widget: "string",   required: true },
+                { label: "發布日期",   name: "published",   widget: "datetime", required: true, date_format: "yyyy-MM-dd", time_format: false },
+                { label: "草稿",       name: "draft",       widget: "boolean",  required: false, default: false },
+                { label: "描述",       name: "description", widget: "text",     required: false },
+                { label: "封面圖片",   name: "cover",       widget: "image",    required: false },
+                { label: "分類",       name: "category",    widget: "string",   required: false },
+                { label: "標籤",       name: "tags",        widget: "list",     required: false },
+                { label: "作者",       name: "author",      widget: "string",   required: false, default: "祥師兄" },
+                { label: "原文連結",   name: "sourceLink",  widget: "string",   required: false },
+                { label: "授權名稱",   name: "licenseName", widget: "string",   required: false },
+                { label: "授權連結",   name: "licenseUrl",  widget: "string",   required: false },
+                { label: "內文",       name: "body",        widget: "markdown", required: true },
+              ],
+            },
+          ],
+        },
+      });
+    </script>
+  </body>
+</html>

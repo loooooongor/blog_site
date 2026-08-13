@@ -1,0 +1,7 @@
+name = "longcfu-blog"
+pages_build_output_dir = "dist"
+compatibility_date = "2025-08-11"
+
+# Cloudflare Pages - static site deployment
+# Build command: npm run build
+# Output directory: dist

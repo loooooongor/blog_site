@@ -8,7 +8,7 @@ const YukinaConfig: Configuration = {
 
   description: "分享六爻占卜與八字命理的基礎概念、實戰案例與學習心得。",
 
-  site: "https://yourdomain.com",
+  site: "https://longcfu.com",
 
   locale: "zh-HK",
 
